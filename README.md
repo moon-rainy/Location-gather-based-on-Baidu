@@ -13,7 +13,7 @@ A Android Application of Location Gather Based On BaiduMap SDK，that you can ge
 ## 2、 将数据发送到Mysql数据库
 在app.src.main.java.com.example.maplocationdemo.DataBase.Connection.CloudBDConnection.java分别配置和自己数据库的信息
 <div align=center>
-           <img width="395" alt="image" src="https://github.com/moon-rainy/Location-gather-based-on-Baidu/assets/110764944/5596fa36-3a5f-4596-8810-77fd74fc6354">
+           <img width="487" alt="image" src="https://github.com/moon-rainy/Location-gather-based-on-Baidu/assets/110764944/37614f50-3922-426e-bc30-620bcff5fb67">
 </div>
 
 在app.src.main.java.com.example.maplocationdemo.baidu.location.BaiDuLocationActivity.java中的对应位置取消注释创建后台发送数据进程
