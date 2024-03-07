@@ -184,7 +184,7 @@ public class BaiDuLocationActivity extends Activity {
                 sb.append(location.getLocationDescribe());// 位置语义化信息
                 address.setLocationDescribe(location.getLocationDescribe());
 
-                // 配置好数据库时，传输数据请去掉下面一天函数的注释
+                // 配置好数据库时，传输数据请去掉下面一条函数的注释
                 // new DBConnectionTask(BaiDuLocationActivity.this, address).execute();
 
 
