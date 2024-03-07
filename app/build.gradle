@@ -1,0 +1,54 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 32
+
+    defaultConfig {
+        applicationId "com.example.maplocationdemo"
+        minSdkVersion 21
+        targetSdkVersion 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ["libs-baidu"]
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+}
+
+dependencies {
+    // 获取权限
+    implementation 'com.karumi:dexter:5.0.0'
+
+    // 百度 SDK
+    implementation files('libs-baidu/BaiduLBS_Android.jar')
+
+    implementation 'mysql:mysql-connector-java:5.1.35'
+
+
+
+}
