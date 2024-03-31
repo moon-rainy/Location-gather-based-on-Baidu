@@ -8,6 +8,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -35,6 +36,7 @@ public class BaiDuMapActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_baidu_map);
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
@@ -42,7 +44,11 @@ public class BaiDuMapActivity extends Activity {
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         // 定位初始化
-        mLocClient = new LocationClient(this);
+        try {
+            mLocClient = new LocationClient(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // 注册位置监听器
         mLocClient.registerLocationListener(new MyLocationListener());
         // 选项配置

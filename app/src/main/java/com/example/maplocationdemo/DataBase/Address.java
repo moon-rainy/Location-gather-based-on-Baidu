@@ -1,6 +1,7 @@
 package com.example.maplocationdemo.DataBase;
 
 public class Address {
+    private String code;
     private String phone;
     private String time;
     private Integer locType;
@@ -19,8 +20,18 @@ public class Address {
     private Integer userIndoorState;
     private String direction;
     private String locationDescribe;
+    private double height;
 
-    public Address(String phone, String time, Integer locType, String locTypeDescription, Double latitude, Double longitude, Double radius, String province, String cityCode, String city, String district, String town, String street, String addr, String streetNumber, Integer userIndoorState, String direction, String locationDescribe) {
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public Address(String code, String phone, String time, Integer locType, String locTypeDescription, Double latitude, Double longitude, Double radius, String province, String cityCode, String city, String district, String town, String street, String addr, String streetNumber, Integer userIndoorState, String direction, String locationDescribe) {
+        this.code = code;
         this.phone = phone;
         this.time = time;
         this.locType = locType;
@@ -41,6 +52,7 @@ public class Address {
         this.locationDescribe = locationDescribe;
     }
 
+
     public Address() {
     }
 
@@ -52,6 +64,7 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
+                "code'" + code + '\'' +
                 "phone='" + phone + '\'' +
                 ", time='" + time + '\'' +
                 ", locType=" + locType +
@@ -71,6 +84,13 @@ public class Address {
                 ", direction='" + direction + '\'' +
                 ", locationDescribe='" + locationDescribe + '\'' +
                 '}';
+    }
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public void setPhone(String phone) {

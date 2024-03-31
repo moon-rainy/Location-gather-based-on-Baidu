@@ -46,19 +46,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_SYSTEM_FIRMWARE"/>
 
-
-
-
-
     <application
+
+
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JustBaiDuMapLocationDemo">
         <activity android:name=".MainActivity"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,13 +73,22 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+        <service
+            android:name=".DataBase.Connection.ConnectionTaskService"
+            android:enabled="true"
+            android:exported="false" />
+            <!-- 填写key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="使用自己申请的百度key码" />
+            android:value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" />
 
         <activity android:name=".baidu.location.BaiDuLocationActivity"
             android:exported="true" />
         <activity android:name=".baidu.map.BaiDuMapActivity"
+            android:exported="true" />
+        <activity android:name=".MQTT.MqttTestActivity"
+            android:exported="true" />
+        <activity android:name=".About.About"
             android:exported="true" />
         <activity android:name=".baidu.background.BackgroundLocationActivity"
             android:exported="true"

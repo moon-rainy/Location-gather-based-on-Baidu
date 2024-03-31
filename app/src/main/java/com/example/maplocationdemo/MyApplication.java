@@ -1,6 +1,7 @@
 package com.example.maplocationdemo;
 
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Service;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.os.Vibrator;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.common.BaiduMapSDKException;
 import com.example.maplocationdemo.baidu.location.LocationService;
 
 import java.security.MessageDigest;
@@ -32,50 +34,19 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // 代码方式获取 SHA1
-        sHA1(getBaseContext());
-
         /***
          * 百度地图定位sdk
          */
-        locationService = new LocationService(getApplicationContext());
-        mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-        SDKInitializer.initialize(getApplicationContext());
-        SDKInitializer.setCoordType(CoordType.BD09LL);
-
-    }
-
-
-    // 代码方式获取 SHA1
-    public static String sHA1(Context context) {
+        // 默认本地个性化地图初始化方法
+        SDKInitializer.setAgreePrivacy(this, true);
         try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), PackageManager.GET_SIGNATURES);
-            byte[] cert = info.signatures[0].toByteArray();
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            byte[] publicKey = md.digest(cert);
-
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < publicKey.length; i++) {
-                String appendString = Integer.toHexString(0xFF & publicKey[i])
-                        .toUpperCase(Locale.US);
-                if (appendString.length() == 1)
-                    hexString.append("0");
-                hexString.append(appendString);
-                hexString.append(":");
-            }
-
-            String result = hexString.toString();
-            result = result.substring(0, result.length() - 1);
-            System.out.println("SHA1: " + result);
-            return result;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+            SDKInitializer.initialize(this);
+        } catch (BaiduMapSDKException e) {
             e.printStackTrace();
         }
-        return null;
-    }
+        SDKInitializer.setCoordType(CoordType.BD09LL);
 
+        mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+
+    }
 }

@@ -18,9 +18,18 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:text="定位地图" />
+
     <Button
         android:id="@+id/bt_baidu_background"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:text="后台持续定位" />
+
+    <Button
+        android:id="@+id/mqtt"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="MQTT消息接收" />
+
+
 </LinearLayout>

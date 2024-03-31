@@ -24,7 +24,7 @@ public class LocationService {
      *
      * @param locationContext
      */
-    public LocationService(Context locationContext) {
+    public LocationService(Context locationContext) throws Exception {
         objLock = new Object();
         synchronized (objLock) {
             if (client == null) {
