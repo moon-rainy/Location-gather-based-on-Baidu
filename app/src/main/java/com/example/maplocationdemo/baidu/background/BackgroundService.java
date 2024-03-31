@@ -6,17 +6,22 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 public class BackgroundService extends ContextWrapper {
     private NotificationManager mManager;
     public static final String ANDROID_CHANNEL_ID = "com.baidu.baidulocationdemo";
     public static final String ANDROID_CHANNEL_NAME = "ANDROID CHANNEL";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public BackgroundService(Context base) {
         super(base);
         createChannels();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void createChannels() {
         // create android channel
         NotificationChannel androidChannel = new NotificationChannel(ANDROID_CHANNEL_ID,
@@ -40,6 +45,7 @@ public class BackgroundService extends ContextWrapper {
         return mManager;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Notification.Builder getAndroidChannelNotification(String title, String body) {
         return new Notification.Builder(getApplicationContext(), ANDROID_CHANNEL_ID)
                 .setContentTitle(title)
@@ -47,4 +53,6 @@ public class BackgroundService extends ContextWrapper {
                 .setSmallIcon(android.R.drawable.stat_notify_more)
                 .setAutoCancel(true);
     }
+
+
 }

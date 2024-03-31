@@ -5,10 +5,14 @@
       <map>
         <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1715" />
         <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1715" />
+        <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/layout/activity_about.xml" value="0.3078125" />
         <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/layout/activity_background_location.xml" value="0.1296875" />
         <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/layout/activity_baidu_location.xml" value="0.1" />
         <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/layout/activity_baidu_map.xml" value="0.1" />
         <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/layout/activity_mqtt.xml" value="0.26875" />
+        <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/layout/notify_privacy_text.xml" value="0.1" />
+        <entry key="..\:/Android/AppProjects-master/JustBaiDuMapLocationDemo/app/src/main/res/menu/opt_menu.xml" value="0.29583333333333334" />
       </map>
     </option>
   </component>

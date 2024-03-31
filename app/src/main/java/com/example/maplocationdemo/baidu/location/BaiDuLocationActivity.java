@@ -4,8 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -17,10 +21,10 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
 import com.baidu.location.PoiRegion;
-import com.example.maplocationdemo.DataBase.Address;
-import com.example.maplocationdemo.DataBase.Connection.DBConnectionTask;
+import com.example.maplocationdemo.DataBase.Connection.ConnectionTaskService;
 import com.example.maplocationdemo.MyApplication;
 import com.example.maplocationdemo.R;
+import com.example.maplocationdemo.Utils.CodeUtil;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.listener.multi.CompositeMultiplePermissionsListener;
 
@@ -37,6 +41,22 @@ public class BaiDuLocationActivity extends Activity {
     private LocationService locationService;
     private TextView LocationResult;
     private Button startLocation;
+    private ConnectionTaskService.MyBinder binder;
+    private boolean isBound = false;
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder = (ConnectionTaskService.MyBinder) service;
+            isBound = true;
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            binder = null;
+            isBound = false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +71,11 @@ public class BaiDuLocationActivity extends Activity {
         // 设置文本内容可以滑动
         // 详情参考：https://www.cnblogs.com/z2qfei/p/7994262.html
         LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
+
+        //  添加后台线程服务管理后台线程
+        Intent intent = new Intent(this, ConnectionTaskService.class);
+        bindService(intent, connection, BIND_AUTO_CREATE);
+
     }
 
     /**
@@ -91,6 +116,7 @@ public class BaiDuLocationActivity extends Activity {
                     startLocation.setText("停止定位");
                 } else {
                     locationService.stop();
+                    binder.getService().stopTask();
                     startLocation.setText("开始定位");
                 }
             }
@@ -104,6 +130,7 @@ public class BaiDuLocationActivity extends Activity {
     protected void onStop() {
         locationService.unregisterListener(mListener); //注销掉监听
         locationService.stop(); //停止定位服务
+        unbindService(connection);  //停止后台线程连接
         super.onStop();
     }
 
@@ -118,10 +145,9 @@ public class BaiDuLocationActivity extends Activity {
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
-                Address address = new Address();
-                @SuppressLint("HardwareIds") String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                address.setPhone(androidId);
+                String code = CodeUtil.getTimeCode();
 
+                @SuppressLint("HardwareIds") String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 StringBuffer sb = new StringBuffer(256);
                 sb.append("time : ");
                 /**
@@ -129,66 +155,46 @@ public class BaiDuLocationActivity extends Activity {
                  * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
                  */
                 sb.append(location.getTime());
-                address.setTime(location.getTime());
                 sb.append("\nlocType : ");// 定位类型
                 sb.append(location.getLocType());
-                address.setLocType(location.getLocType());
                 sb.append("\nlocType description : ");// *****对应的定位类型说明*****
                 sb.append(location.getLocTypeDescription());
-                address.setLocTypeDescription(location.getLocTypeDescription());
                 sb.append("\nlatitude : ");// 纬度
                 sb.append(location.getLatitude());
-                address.setLatitude(location.getLatitude());
                 sb.append("\nlongitude : ");// 经度
                 sb.append(location.getLongitude());
-                address.setLongitude(location.getLongitude());
                 sb.append("\nradius : ");// 半径
                 sb.append(location.getRadius());
-                address.setRadius((double) location.getRadius());
                 sb.append("\nCountryCode : ");// 国家码
                 sb.append(location.getCountryCode());
                 sb.append("\nProvince : ");// 获取省份
                 sb.append(location.getProvince());
-                address.setProvince(location.getProvince());
                 sb.append("\nCountry : ");// 国家名称
                 sb.append(location.getCountry());
-                address.setCity(location.getCity());
                 sb.append("\ncitycode : ");// 城市编码
                 sb.append(location.getCityCode());
-                address.setCityCode(location.getCityCode());
                 sb.append("\ncity : ");// 城市
                 sb.append(location.getCity());
-                address.setCity(location.getCity());
                 sb.append("\nDistrict : ");// 区
                 sb.append(location.getDistrict());
-                address.setDistrict(location.getDistrict());
                 sb.append("\nTown : ");// 获取镇信息
                 sb.append(location.getTown());
-                address.setTown(location.getTown());
                 sb.append("\nStreet : ");// 街道
                 sb.append(location.getStreet());
-                address.setStreet(location.getStreet());
                 sb.append("\naddr : ");// 地址信息
                 sb.append(location.getAddrStr());
-                address.setAddr(location.getAddrStr());
                 sb.append("\nStreetNumber : ");// 获取街道号码
                 sb.append(location.getStreetNumber());
-                address.setStreetNumber(location.getStreetNumber());
                 sb.append("\nUserIndoorState: ");// *****返回用户室内外判断结果*****
                 sb.append(location.getUserIndoorState());
-                address.setUserIndoorState(location.getUserIndoorState());
                 sb.append("\nDirection(not all devices have value): ");
                 sb.append(location.getDirection());// 方向
-                address.setDirection(String.valueOf(location.getDirection()));
                 sb.append("\nlocationdescribe: ");
                 sb.append(location.getLocationDescribe());// 位置语义化信息
-                address.setLocationDescribe(location.getLocationDescribe());
-
-                // 配置好数据库时，传输数据请去掉下面一条函数的注释
-                // new DBConnectionTask(BaiDuLocationActivity.this, address).execute();
-
 
                 sb.append("\nPoi: ");// POI信息
+
+//                ExecutorService executor = Executors.newFixedThreadPool(10);
 
                 if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
                     for (int i = 0; i < location.getPoiList().size(); i++) {
@@ -222,6 +228,7 @@ public class BaiDuLocationActivity extends Activity {
                     sb.append(location.getGpsAccuracyStatus());// *****gps质量判断*****
                     sb.append("\ndescribe : ");
                     sb.append("gps定位成功");
+
                 } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
                     // 运营商信息
                     if (location.hasAltitude()) {// *****如果有海拔高度*****
@@ -256,5 +263,6 @@ public class BaiDuLocationActivity extends Activity {
             }
         }
     };
+
 
 }
